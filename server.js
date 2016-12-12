@@ -95,38 +95,30 @@ app.put('/posts/:id', (req, res) => {
 });
 
 
-app.delete('/posts/:id', (req, res) => {
-  BlogPosts.delete(req.params.id);
-  console.log(`Deleted blog post with id \`${req.params.ID}\``);
-  res.status(204).end();
-});
-
-
 app.use('*', function(req, res) {
   res.status(404).json({message: 'Not Found'});
 });
 
-function runServer(callback) {
-  mongoose.connect(DATABASE_URL, (err) => {
-    if (err && callback) {
-      return callback(err);
-    }
+function runServer() {
+ return new Promise((resolve, reject) => {
+   mongoose.connect(DATABASE_URL, err => {
+     if (err) {
+       return reject(err);
+     }
 
-    app.listen(PORT, () => {
-      console.log(`Your app is listening on port ${PORT}`);
-      if (callback) {
-        callback();
-      }
-    });
-  });
-};
+     app.listen(PORT, () => {
+       console.log(`Your app is listening on port ${PORT}`);
+       resolve();
+     }).on('error', err => {
+         mongoose.disconnect();
+         reject(err)
+     });
+   });
+ });
+}
 
 if (require.main === module) {
-  runServer(function(err) {
-    if (err) {
-      console.error(err);
-    }
-  });
+ runServer().catch(err => console.error(err));
 };
 
 module.exports = {runServer, app};
