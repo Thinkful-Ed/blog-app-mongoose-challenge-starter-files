@@ -17,7 +17,6 @@ mongoose.Promise = global.Promise;
 app.get('/posts', (req, res) => {
   BlogPost
     .find()
-    .exec()
     .then(posts => {
       res.json(posts.map(post => post.apiRepr()));
     })
@@ -30,7 +29,6 @@ app.get('/posts', (req, res) => {
 app.get('/posts/:id', (req, res) => {
   BlogPost
     .findById(req.params.id)
-    .exec()
     .then(post => res.json(post.apiRepr()))
     .catch(err => {
       console.error(err);
@@ -67,7 +65,6 @@ app.post('/posts', (req, res) => {
 app.delete('/posts/:id', (req, res) => {
   BlogPost
     .findByIdAndRemove(req.params.id)
-    .exec()
     .then(() => {
       res.status(204).json({message: 'success'});
     })
@@ -95,8 +92,7 @@ app.put('/posts/:id', (req, res) => {
 
   BlogPost
     .findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
-    .exec()
-    .then(updatedPost => res.status(201).json(updatedPost.apiRepr()))
+    .then(updatedPost => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
@@ -104,7 +100,6 @@ app.put('/posts/:id', (req, res) => {
 app.delete('/:id', (req, res) => {
   BlogPosts
     .findByIdAndRemove(req.params.id)
-    .exec()
     .then(() => {
       console.log(`Deleted blog post with id \`${req.params.ID}\``);
       res.status(204).end();
