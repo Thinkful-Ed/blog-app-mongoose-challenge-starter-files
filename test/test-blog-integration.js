@@ -43,6 +43,7 @@ function generateBlogPostData() {
     title: generateTitle(),
     content: generateContent(),
     author: generateAuthor()
+  }
 }
 
 function seedBlogPostData() {
@@ -249,4 +250,3 @@ describe('BlogPosts API resource', function() {
     });
   });
 });
-}
