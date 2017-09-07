@@ -105,47 +105,47 @@ describe('BlogPosts API resource', function() {
       // `.then()` calls below, so declare it here so can modify in place
       let res;
       return chai.request(app)
-        .get('/blogposts')
+        .get('/posts')
         .then(function(_res) {
           // so subsequent .then blocks can access resp obj.
           res = _res;
           res.should.have.status(200);
           // otherwise our db seeding didn't work
-          res.body.blogposts.should.have.length.of.at.least(1);
-          return Blogpost.count();
+          res.body.should.have.length.of.at.least(1);
+          return BlogPost.count();
         })
         .then(function(count) {
-          res.body.blogposts.should.have.length.of(count);
+          res.body.should.have.length.of(count);
         });
     });
 
 
-    it('should return blogpostss with right fields', function() {
+    it('should return blogposts with right fields', function() {
       // Strategy: Get back all blogposts, and ensure they have expected keys
 
-      let resBlogPosts;
+      let resBlogPost;
       return chai.request(app)
-        .get('/blogposts')
+        .get('/posts')
         .then(function(res) {
           res.should.have.status(200);
           res.should.be.json;
-          res.body.blogposts.should.be.a('array');
-          res.body.blogposts.should.have.length.of.at.least(1);
+          res.body.should.be.a('array');
+          res.body.should.have.length.of.at.least(1);
 
-          res.body.blogposts.forEach(function(blogpost) {
-            blogpost.should.be.a('object');
-            blogpost.should.include.keys(
+          res.body.forEach(function(post) {
+            post.should.be.a('object');
+            post.should.include.keys(
               'id', 'title', 'content', 'author');
           });
-          resBlogPost = res.body.blogposts[0];
-          return BlogPost.findById(resblogpost.id);
+          resBlogPost = res.body[0];
+          return BlogPost.findById(resBlogPost.id);
         })
         .then(function(blogpost) {
 
           resBlogPost.id.should.equal(blogpost.id);
           resBlogPost.title.should.equal(blogpost.title);
           resBlogPost.content.should.equal(blogpost.content);
-          resBlogPost.author.should.equal(blogpost.author);
+          resBlogPost.author.should.equal(blogpost.authorName);
         });
     });
   });
@@ -160,24 +160,24 @@ describe('BlogPosts API resource', function() {
       const newBlogPost = generateBlogPostData();
 
       return chai.request(app)
-        .post('/blogposts')
+        .post('/posts')
         .send(newBlogPost)
         .then(function(res) {
           res.should.have.status(201);
           res.should.be.json;
           res.body.should.be.a('object');
           res.body.should.include.keys(
-            'id', 'title', 'content', 'author');
+            'id', 'title', 'content', 'author', 'created');
           res.body.id.should.not.be.null;
           res.body.title.should.equal(newBlogPost.title);
           res.body.content.should.equal(newBlogPost.content);
-          res.body.author.should.equal(newBlogPost.author);
+          res.body.authorName.should.equal(newBlogPost.author);
+          return BlogPost.findById(res.body.id).exec();          
         })
         .then(function(blogpost) {
           blogpost.title.should.equal(newBlogPost.title);
           blogpost.content.should.equal(newBlogPost.content);
-          blogpost.author.should.equal(newBlogPost.author);
-          blogpost.grade.should.equal(mostRecentGrade);
+          blogpost.authorName.should.equal(newBlogPost.author);
         });
     });
   });
@@ -204,7 +204,7 @@ describe('BlogPosts API resource', function() {
           // make request then inspect it to make sure it reflects
           // data we sent
           return chai.request(app)
-            .put(`/blogposts/${blogpost.id}`)
+            .put(`/posts/${blogpost.id}`)
             .send(updateData);
         })
         .then(function(res) {
@@ -215,7 +215,7 @@ describe('BlogPosts API resource', function() {
         .then(function(blogpost) {
           blogpost.title.should.equal(updateData.title);
           blogpost.content.should.equal(updateData.content);
-          blogpost.author.should.equal(updateData.author);
+          blogpost.author.should.equal(updateData.authorName);
         });
       });
   });
@@ -234,13 +234,13 @@ describe('BlogPosts API resource', function() {
         .findOne()
         .then(function(_blogpost) {
           blogpost = _blogpost;
-          return chai.request(app).delete(`/blogposts/${blogpost.id}`);
+          return chai.request(app).delete(`/posts/${blogpost.id}`);
         })
         .then(function(res) {
           res.should.have.status(204);
           return BlogPost.findById(blogpost.id);
         })
-        .then(function(blogpost) {
+        .then(function(_blogpost) {
           // when a variable's value is null, chaining `should`
           // doesn't work. so `_restaurant.should.be.null` would raise
           // an error. `should.be.null(_restaurant)` is how we can
