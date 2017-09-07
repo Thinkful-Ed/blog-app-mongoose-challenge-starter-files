@@ -27,11 +27,14 @@ function generateContent() {
 
 // used to generate data to put in db
 function generateAuthor() {
-    const authors = ['Peter Yu', 'Waleed Hamied', 'Thomas Sinh', 'Kyle Zinn', 'Alan Andersen'];
+    const authors = ['Peter', 'Waleed', 'Thomas', 'Kyle', 'Alan'];
     const author = authors[Math.floor(Math.random() * authors.length)];
   return {
     date: faker.date.past(),
-    author: author
+    author: {
+      firstName: author,
+      lastName: author
+    }
   }
 }
 
@@ -169,6 +172,8 @@ describe('BlogPosts API resource', function() {
           res.body.should.include.keys(
             'id', 'title', 'content', 'author', 'created');
           res.body.id.should.not.be.null;
+          res.body.author.should.equal(
+            `${newBlogPost.author.firstName} ${newBlogPost.author.lastName}`);
           res.body.title.should.equal(newBlogPost.title);
           res.body.content.should.equal(newBlogPost.content);
           res.body.authorName.should.equal(newBlogPost.author);
@@ -177,7 +182,8 @@ describe('BlogPosts API resource', function() {
         .then(function(blogpost) {
           blogpost.title.should.equal(newBlogPost.title);
           blogpost.content.should.equal(newBlogPost.content);
-          blogpost.authorName.should.equal(newBlogPost.author);
+          post.author.firstName.should.equal(newBlogPost.author.firstName);
+          post.author.lastName.should.equal(newBlogPost.author.lastName);
         });
     });
   });
