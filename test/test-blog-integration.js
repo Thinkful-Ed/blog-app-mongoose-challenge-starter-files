@@ -28,12 +28,12 @@ function generateContent() {
 // used to generate data to put in db
 function generateAuthor() {
     const authors = ['Peter', 'Waleed', 'Thomas', 'Kyle', 'Alan'];
-    const author = authors[Math.floor(Math.random() * authors.length)];
+    const _author = authors[Math.floor(Math.random() * authors.length)];
   return {
     date: faker.date.past(),
     author: {
-      firstName: author,
-      lastName: author
+      firstName: _author,
+      lastName: _author
     }
   }
 }
