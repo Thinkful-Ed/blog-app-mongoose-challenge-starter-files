@@ -16,26 +16,28 @@ chai.use(chaiHttp);
 function generateTitle() {
   const titles = [
     'Cloud Atlas', 'The Matrix', 'Interstellar', 'Dr. Strange', 'La La Land'];
-  return titles[Math.floor(Math.random() * titles.length)];
+  let title = titles[Math.floor(Math.random() * titles.length)];
+  return title;
 }
 
 // used to generate data to put in db
 function generateContent() {
-  const content = ['The movie is good.', 'The movie is okay.', 'The movie is bad.'];
-  return content[Math.floor(Math.random() * content.length)];
+  const contents = ['The movie is good.', 'The movie is okay.', 'The movie is bad.'];
+  let content = contents[Math.floor(Math.random() * contents.length)];
+  return content;
 }
 
 // used to generate data to put in db
-function generateAuthor() {
-    const authors = ['Peter', 'Waleed', 'Thomas', 'Kyle', 'Alan'];
-    const _author = authors[Math.floor(Math.random() * authors.length)];
-  return {
-    date: faker.date.past(),
-    author: {
-      firstName: _author,
-      lastName: _author
-    }
-  }
+function generateAuthorFirstName() {
+    const firsts = ['Peter', 'Waleed', 'Thomas', 'Kyle', 'Alan'];
+    let first = firsts[Math.floor(Math.random() * firsts.length)];
+  return first
+}
+
+function generateAuthorLastName() {
+    const lasts = ['Smith', 'Johnson', 'Bush', 'Peterson', 'Yu'];
+    let last = lasts[Math.floor(Math.random() * lasts.length)];
+  return last;
 }
 
 // generate an object represnting a blogpost.
@@ -45,7 +47,10 @@ function generateBlogPostData() {
   return {
     title: generateTitle(),
     content: generateContent(),
-    author: generateAuthor()
+    author: {
+      firstName: generateAuthorFirstName(),
+      lastName: generateAuthorLastName()
+    }
   }
 }
 
@@ -176,14 +181,14 @@ describe('BlogPosts API resource', function() {
             `${newBlogPost.author.firstName} ${newBlogPost.author.lastName}`);
           res.body.title.should.equal(newBlogPost.title);
           res.body.content.should.equal(newBlogPost.content);
-          res.body.authorName.should.equal(newBlogPost.author);
-          return BlogPost.findById(res.body.id).exec();          
+          // res.body.author.should.equal(newBlogPost.author); the key 'authorName' does not exist; after changing to 'author', this assertion is redundant (see above) and no longer necessary
+          return BlogPost.findById(res.body.id).exec();
         })
         .then(function(blogpost) {
           blogpost.title.should.equal(newBlogPost.title);
           blogpost.content.should.equal(newBlogPost.content);
-          post.author.firstName.should.equal(newBlogPost.author.firstName);
-          post.author.lastName.should.equal(newBlogPost.author.lastName);
+          blogpost.author.firstName.should.equal(newBlogPost.author.firstName);
+          blogpost.author.lastName.should.equal(newBlogPost.author.lastName);
         });
     });
   });
@@ -221,7 +226,8 @@ describe('BlogPosts API resource', function() {
         .then(function(blogpost) {
           blogpost.title.should.equal(updateData.title);
           blogpost.content.should.equal(updateData.content);
-          blogpost.author.should.equal(updateData.authorName);
+          console.log('------------ \n', blogpost.author, '\n ------------ \n', updateData);
+          blogpost.author.should.equal(updateData.author);  // error that appears to be caused by different data types
         });
       });
   });
