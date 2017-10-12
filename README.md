@@ -1,2 +1,1 @@
-Blog app challenge solution
-==========================
+Challenge: Add tests to the Mongoose blog app.
