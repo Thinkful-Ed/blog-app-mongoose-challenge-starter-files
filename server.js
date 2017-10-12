@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 
 mongoose.Promise = global.Promise;
 
-
 app.get('/posts', (req, res) => {
   BlogPost
     .find()
