@@ -1,4 +1,11 @@
 language: node_js
 node_js: node
-services:
-  -mongodb
+services: -mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: zF8NemiCY3ycAIpOaodqguZg+ZWsW2E3TYgxyMIlNQBMm6972dpMQCxrz3tVmhGNLQcYHrU/Jo0YYuqj+YHKH/+zitiBUgAqrxVFmB01v2RO4G3RuT2W5djBOoW8gkDYCS5B25d6iOm0MueRCbDe8N8I8HGoqf0bEg4t65dtqYkIb4sZw7GOEvx3K988KhhDUhH4vn44BIEhJRjBLpm/GtYTwtEsEAZJFQbFGi8QwfZAUpZAq3e9QA8yMoP4zkKoq/IIN3Z0kSuq1r9jUKZungAMTiuwwWhAnsIqKAJusH7fyiLnUViF2md17hL0g75cn6VPcgqv2MgO8zYSNxD7lOpRt3/xPaBz4Qdb8xFkyzFYNgP+7+16ujtXxURwGbHODs1W7AAe9ES/l6DAifIOIEy0ZknwphookAo2eammucU7J2yCoDjXMAVtZvl8ydKVCipTQ5i1eRwqPSViyfTRe3DX3QIgi9C3whT7b6GJsvjnmOcGIUa0T2HXPZczeZJWU9iTOLD1wllppBKiohOpBUwLygmRAk8w9Ugegfpsm1SkGGv07clrY+l9pIvktkRHIKy7k6j8uxfFebgLVTL01+GGxJqu5sMLRC4wdMYTsKPU7zSV1hJ0s8zvC0sdhlGNco746kfkpD0qtvAKG99dHoAn3UXfTrIMu8YmxyWyqIY=
+  app: immense-journey-13265
+  on:
+    repo: amandaherschleb/blog-app-mongoose-testing
+    branch: add-integration-tests
