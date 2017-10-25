@@ -250,7 +250,7 @@ describe('Blogs API resource', function() {
           // doesn't work. so `_restaurant.should.be.null` would raise
           // an error. `should.be.null(_restaurant)` is how we can
           // make assertions about a null value.
-          should.not.exist(_blog);
+          should.not.exist(_blog)
         });
     });
   });
