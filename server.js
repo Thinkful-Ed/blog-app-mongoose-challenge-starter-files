@@ -149,7 +149,7 @@ function closeServer() {
         resolve();
       });
     });
-  });
+  })
 }
 
 // if server.js is called directly (aka, with `node server.js`), this block
@@ -157,5 +157,7 @@ function closeServer() {
 if (require.main === module) {
   runServer().catch(err => console.error(err));
 }
+
+
 
 module.exports = {runServer, app, closeServer};
