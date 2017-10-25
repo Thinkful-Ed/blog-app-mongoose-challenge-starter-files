@@ -1,3 +1,4 @@
+'use strict';
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -41,7 +42,7 @@ app.post('/posts', (req, res) => {
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
+      const message = `Missing \`${field}\` in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
@@ -55,8 +56,8 @@ app.post('/posts', (req, res) => {
     })
     .then(blogPost => res.status(201).json(blogPost.apiRepr()))
     .catch(err => {
-        console.error(err);
-        res.status(500).json({error: 'Something went wrong'});
+      console.error(err);
+      res.status(500).json({error: 'Something went wrong'});
     });
 
 });
@@ -98,7 +99,7 @@ app.put('/posts/:id', (req, res) => {
 
 
 app.delete('/:id', (req, res) => {
-  BlogPosts
+  BlogPost
     .findByIdAndRemove(req.params.id)
     .then(() => {
       console.log(`Deleted blog post with id \`${req.params.ID}\``);
@@ -127,10 +128,10 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT) {
         console.log(`Your app is listening on port ${port}`);
         resolve();
       })
-      .on('error', err => {
-        mongoose.disconnect();
-        reject(err);
-      });
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
     });
   });
 }
@@ -139,15 +140,15 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT) {
 // use it in our integration tests later.
 function closeServer() {
   return mongoose.disconnect().then(() => {
-     return new Promise((resolve, reject) => {
-       console.log('Closing server');
-       server.close(err => {
-           if (err) {
-               return reject(err);
-           }
-           resolve();
-       });
-     });
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   });
 }
 
@@ -155,6 +156,6 @@ function closeServer() {
 // runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
 if (require.main === module) {
   runServer().catch(err => console.error(err));
-};
+}
 
 module.exports = {runServer, app, closeServer};
