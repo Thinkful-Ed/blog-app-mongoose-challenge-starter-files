@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: imMnO0/bY3XIf9St8xzFyBx7i0E6HSa1PxBVdk90U3MmlBOZeyUJiLrGRO0gJEAyRQDnEy6VoraokEWqO6W1BJasjDBhntXY5pyPwC7H+VMvUkaM14LWzL6/OOcxoZmL3Iq76lTtay2q/rdltY5iRFvLF0iZISuykALBVRVOM3glWxwxRbcVnut6NlalilNFb2v0yH/IDwg02wsdTipITyIKjS5BMLNrAHudBi093ZILGP+nWM7SjgvAs31GC/+iyyKja/fBYFqvOlOiw39gbH2l0u6/t4mwdxBSyi2aDFKmRJkwBPyIqrB1xJrXOTOM1Ph0oWbAKYTQ2tMTlRqh4WKEOLBrqXj0FKGCGzSrIA27l8DpBUk1r6ycBnXzph1hZlwQNZLRdmMkC6Xw81QrbnM4BgssnBrS52g2513O6vlnZuKCDKBDOfDgUTCAS8nab+RV00C2yA/+zBnxIWzDj0qaMshkWEZ1ck/T2BFNJYDBp8egzG4oc7p/6XUl1ipCRfVdeKrdcAeKM5gQZW5eLHLDAnS2a268oQuJ82I763Bv+tgustRg6twrldABSsOhhexKO7gwvjzSCO25SqEKg4VmBGwv1M48l9bOmDzYHiNdsmzBJDqBvPadV2AuvsDv2vmh0dXIQCMJr+2wfRARNpijxoZvSLSdtesAKmamEj8=
+  app: fast-ravine-28216
+  on:
+    repo: inconbeo/blog-app-mongoose-challenge-solution
